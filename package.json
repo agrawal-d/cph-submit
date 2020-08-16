@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "out/extension.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Divyanshu Agrawal",
   "license": "MIT",
   "devDependencies": {
+    "ts-loader": "^8.0.2",
     "typescript": "^3.9.7",
     "web-ext-types": "^3.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "webpack-dev": "webpack --mode=production --watch",
+    "webpack": "webpack --mode=production",
+    "tsc": "tsc",
+    "tsc-dev": "tsc --watch"
   }
 }

@@ -3,6 +3,7 @@ import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";
 
 const mainLoop = async () => {
+  console.log("TS Loader is finally working");
   let cphResponse;
   try {
     const headers = new Headers();
@@ -15,18 +16,16 @@ const mainLoop = async () => {
 
     cphResponse = await fetch(request);
   } catch (err) {
-    console.error("Error while fetching cph response", err);
+    console.log("Error while fetching cph response", err);
     return;
   }
 
   if (!cphResponse.ok) {
-    console.error("Error while fetching cph response", cphResponse);
+    console.log("Error while fetching cph response", cphResponse);
     return;
   }
 
-  const response:
-    | CphSubmitResponse
-    | CphEmptyResponse = await cphResponse.json();
+  const response: CphSubmitResponse | CphEmptyResponse = await cphResponse.json();
 
   if (response.empty) {
     console.log("Got empty valid response from CPH");

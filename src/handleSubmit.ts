@@ -12,14 +12,18 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
     url: config.cfSubmitPage.href,
   });
 
-  await browser.tabs.executeScript(tab.id, {
-    file: "/dist/injectedScript.js",
+  browser.windows.update(tab.windowId, {
+    focused: true,
   });
 
   if (tab.id == undefined) {
     console.error("No tab id to send message to", tab);
     return;
   }
+
+  await browser.tabs.executeScript(tab.id, {
+    file: "/dist/injectedScript.js",
+  });
 
   browser.tabs.sendMessage(tab.id, {
     type: "cph-submit",
@@ -28,7 +32,4 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
     sourceCode,
   });
   console.log("Sending message to tab with script");
-  browser.windows.update(tab.windowId, {
-    focused: true,
-  });
 };

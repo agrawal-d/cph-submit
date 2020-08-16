@@ -2,8 +2,8 @@
   "name": "CPH Submit",
   "manifest_version": 2,
   "homepage_url": "https://github.com/agrawal-d/cph-submit",
-  "version": "1.0.0",
-  "description": "Codeforces Submit add-on for Competitive Programming Helper",
+  "version": "1.1.0",
+  "description": "Codeforces Submit add-on for Competitive Programming Helper.",
   "background": {
     "scripts": ["dist/backgroundScript.js"]
   },
@@ -14,7 +14,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "cph-submit@agrawal-d.com",
-      "strict_min_version": "42.0"
+      "strict_min_version": "49.0"
     }
   }
 }
