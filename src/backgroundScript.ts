@@ -3,7 +3,6 @@ import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";
 
 const mainLoop = async () => {
-  console.log("TS Loader is finally working");
   let cphResponse;
   try {
     const headers = new Headers();
