@@ -1,13 +1,19 @@
-# cph-submit
+# ![ICON](icon-48.png) cph-submit
 
-![ICON](icon-48.png)
+Browser add on that enables Codeforces submit with [Competitive Programming Helper](https://github.com/agrawal-d/cph)
 
-**Pre-alpha release**
-
-Browser add on that enables codeforces submit for C++ 17 with [Competitive Programming Helper](https://github.com/agrawal-d/cph)
-
-Tested with Firefox.
+Works for Firefox. Chrome release may be made available in the future.
 
 ## Installation
 
-Load the `extension.xpi` file in the repo into `about:addons` in Firefox, by pressing the gear icon and selecting "Install add on from file".
+1. Visit https://addons.mozilla.org/en-US/firefox/addon/cph-submit/
+1. Install the extension
+1. Keep the browser window open when you want to submit from cph in VS Code.
+
+## Contributing
+
+Contributions are welcome.
+
+## Support
+
+Please create an issue for support.
