@@ -7,7 +7,7 @@
   "background": {
     "scripts": ["dist/backgroundScript.js"]
   },
-  "permissions": ["*://localhost/*", "tabs", "*://codeforces.com/*"],
+  "permissions": ["*://localhost/*", "*://codeforces.com/*"],
   "icons": {
     "48": "icon-48.png"
   },
