@@ -1,6 +1,7 @@
 import config from "./config";
 import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";
+import log from "./log";
 
 const mainLoop = async () => {
   let cphResponse;
@@ -15,24 +16,24 @@ const mainLoop = async () => {
 
     cphResponse = await fetch(request);
   } catch (err) {
-    console.log("Error while fetching cph response", err);
+    log("Error while fetching cph response", err);
     return;
   }
 
   if (!cphResponse.ok) {
-    console.log("Error while fetching cph response", cphResponse);
+    log("Error while fetching cph response", cphResponse);
     return;
   }
 
   const response: CphSubmitResponse | CphEmptyResponse = await cphResponse.json();
 
   if (response.empty) {
-    console.log("Got empty valid response from CPH");
+    log("Got empty valid response from CPH");
 
     return;
   }
 
-  console.log("Got non-empty valid response from CPH");
+  log("Got non-empty valid response from CPH");
   handleSubmit(response.problemName, response.languageId, response.sourceCode);
 };
 

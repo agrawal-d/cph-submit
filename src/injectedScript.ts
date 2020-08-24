@@ -1,6 +1,7 @@
 import { ContentScriptData } from "./types";
+import log from "./log";
 
-console.log("cph-submit script injected");
+log("cph-submit script injected");
 
 const handleData = (data: ContentScriptData) => {
   const problemNameEl = document.getElementsByName("submittedProblemCode")[0] as HTMLInputElement;
@@ -12,13 +13,13 @@ const handleData = (data: ContentScriptData) => {
   languageEl.value = data.languageId.toString();
   sourceCodeEl.value = data.sourceCode;
 
-  console.log("Submitting problem");
+  log("Submitting problem");
   submitBtn.click();
 };
 
-console.log("Adding event listener", browser);
+log("Adding event listener", browser);
 browser.runtime.onMessage.addListener((data: any, sender: any) => {
-  console.log("Got message", data, sender);
+  log("Got message", data, sender);
   if (data.type == "cph-submit") {
     handleData(data);
   }
