@@ -33,4 +33,29 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
     sourceCode,
   });
   log("Sending message to tab with script");
+
+  const filter = {
+    url: [{ urlContains: "codeforces.com/problemset/status" }],
+  };
+
+  log("Adding nav listener");
+
+  browser.webNavigation.onCommitted.addListener((args) => {
+    log("Navigation about to happen");
+
+    if (args.tabId === tab.id) {
+      log("Our tab is navigating");
+
+      const url = new URL(args.url);
+      const searchParams = new URLSearchParams(url.search);
+
+      if (searchParams.has("friends")) {
+        return;
+      }
+
+      log("Navigating to friends mode");
+
+      browser.tabs.update(args.tabId, { url: args.url + "?friends=on" });
+    }
+  }, filter);
 };
