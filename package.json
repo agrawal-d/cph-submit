@@ -13,7 +13,7 @@
     "webpack-cli": "^3.3.12"
   },
   "scripts": {
-    "webpack-dev": "webpack --mode=production --watch",
+    "webpack-dev": "webpack --mode=development --watch",
     "webpack": "webpack --mode=production",
     "tsc": "tsc",
     "tsc-dev": "tsc --watch"

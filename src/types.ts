@@ -5,6 +5,7 @@ export type CphEmptyResponse = {
 export type CphSubmitResponse = {
   empty: false;
   problemName: string;
+  url: string;
   sourceCode: string;
   languageId: number;
 };

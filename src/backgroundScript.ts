@@ -34,7 +34,7 @@ const mainLoop = async () => {
   }
 
   log("Got non-empty valid response from CPH");
-  handleSubmit(response.problemName, response.languageId, response.sourceCode);
+  handleSubmit(response.problemName, response.languageId, response.sourceCode, response.url);
 };
 
 setInterval(mainLoop, config.loopTimeOut);
