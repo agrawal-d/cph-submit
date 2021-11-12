@@ -3,7 +3,7 @@ export type CphEmptyResponse = {
 };
 
 export type CphSubmitResponse = {
-  empty: false;
+  empty ?: false;
   problemName: string;
   url: string;
   sourceCode: string;
@@ -11,5 +11,5 @@ export type CphSubmitResponse = {
 };
 
 export type ContentScriptData = {
-  type: "cph-submit";
+  type ?: "cph-submit";
 } & CphSubmitResponse;

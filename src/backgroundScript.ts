@@ -1,8 +1,9 @@
 import config from "./config";
+import log from "./log";
 import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";
-import log from "./log";
 
+// main background
 const mainLoop = async () => {
   let cphResponse;
   try {
@@ -25,7 +26,7 @@ const mainLoop = async () => {
     return;
   }
 
-  const response: CphSubmitResponse | CphEmptyResponse = await cphResponse.json();
+  const response = await cphResponse.json();
 
   if (response.empty) {
     log("Got empty valid response from CPH");
@@ -34,6 +35,7 @@ const mainLoop = async () => {
   }
 
   log("Got non-empty valid response from CPH");
+  log(response);
   handleSubmit(response.problemName, response.languageId, response.sourceCode, response.url);
 };
 
