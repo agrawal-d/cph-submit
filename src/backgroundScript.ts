@@ -2,7 +2,7 @@ import config from "./config";
 import log from "./log";
 import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";
-
+import { keepAlive } from "./keepAlive";
 // main background
 const mainLoop = async () => {
   let cphResponse;
@@ -40,3 +40,6 @@ const mainLoop = async () => {
 };
 
 setInterval(mainLoop, config.loopTimeOut);
+
+
+keepAlive();

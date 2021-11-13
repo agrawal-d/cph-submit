@@ -22,8 +22,6 @@
   ],
   "host_permissions": [
     "*://localhost/*",
-    "https://codeforces.com/*",
-    "*://codeforces.com/*",
-    "*://*/*"
+    "*://codeforces.com/*"
   ]
 }
