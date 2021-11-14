@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   entry: {
     backgroundScript: "./src/backgroundScript.ts",
+    injectedScript: "./src/injectedScript.ts",
   },
   output: {
     filename: "[name].js",
