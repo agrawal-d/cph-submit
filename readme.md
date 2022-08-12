@@ -2,13 +2,22 @@
 
 Browser add on that enables Codeforces submit with [Competitive Programming Helper](https://github.com/agrawal-d/cph)
 
-Works for Firefox. Chrome release may be made available in the future.
+Works for Firefox and Chrome.
 
-## Installation
+## Installation For FireFox
 
 1. Visit https://addons.mozilla.org/en-US/firefox/addon/cph-submit/
 1. Install the extension
 1. Keep the browser window open when you want to submit from cph in VS Code.
+
+## Installation For Chrome
+
+1. Install npm
+1. Clone this Repository
+1. Run "npm install"
+1. Run "npm run webpack"
+1. Load Extention to Google Chrome as unpacked.
+
 
 ## Contributing
 
