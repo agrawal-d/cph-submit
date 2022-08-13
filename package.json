@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "out/extension.js",
-  "author": "Divyanshu Agrawal",
+  "author": "Divyanshu Agrawal, Abdallah Maher",
   "license": "MIT",
   "devDependencies": {
     "ts-loader": "^8.0.2",
     "typescript": "^3.9.7",
-    "web-ext-types": "^3.2.1",
+    "@types/chrome": "^0.0.114",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
