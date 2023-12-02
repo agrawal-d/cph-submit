@@ -18,7 +18,7 @@ export const getSubmitUrl = (problemUrl: string) => {
 /** Opens the codefoces submit page and injects script to submit code. */
 export const handleSubmit = async (problemName: string, languageId: number, sourceCode: string, problemUrl: string) => {
   if (problemName === "" || languageId == -1 || sourceCode == "") {
-    log("Ivalid arguments to handleSubmit");
+    log("Invalid arguments to handleSubmit");
     return;
   }
 
