@@ -1,3 +1,4 @@
+// This script is always running in the background once the extension is installed.
 import config from "./config";
 import { CphSubmitResponse, CphEmptyResponse } from "./types";
 import { handleSubmit } from "./handleSubmit";

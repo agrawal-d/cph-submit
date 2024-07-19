@@ -1,5 +1,12 @@
+// Code run when background script detects there is a problem to submit
 import config from "./config";
 import log from "./log";
+
+declare const browser: any;
+
+if (typeof chrome === "undefined") {
+  self.chrome = browser;
+}
 
 export const isContestProblem = (problemUrl: string) => {
   return problemUrl.indexOf("contest") != -1;
@@ -24,12 +31,12 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
 
   log("isContestProblem", isContestProblem(problemUrl));
 
-  const tab = await browser.tabs.create({
+  const tab = await chrome.tabs.create({
     active: true,
     url: getSubmitUrl(problemUrl),
   });
 
-  browser.windows.update(tab.windowId, {
+  chrome.windows.update(tab.windowId, {
     focused: true,
   });
 
@@ -38,11 +45,15 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
     return;
   }
 
-  await browser.tabs.executeScript(tab.id, {
-    file: "/dist/injectedScript.js",
+  await chrome.scripting.executeScript({
+    target: {
+      tabId: tab.id,
+      allFrames: true,
+    },
+    files: ["/dist/injectedScript.js"],
   });
 
-  browser.tabs.sendMessage(tab.id, {
+  chrome.tabs.sendMessage(tab.id, {
     type: "cph-submit",
     problemName,
     languageId,
@@ -57,7 +68,7 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
 
   log("Adding nav listener");
 
-  browser.webNavigation.onCommitted.addListener((args) => {
+  chrome.webNavigation.onCommitted.addListener((args) => {
     log("Navigation about to happen");
 
     if (args.tabId === tab.id) {
@@ -72,7 +83,7 @@ export const handleSubmit = async (problemName: string, languageId: number, sour
 
       // log("Navigating to friends mode");
 
-      // browser.tabs.update(args.tabId, { url: args.url + "?friends=on" });
+      // chrome.tabs.update(args.tabId, { url: args.url + "?friends=on" });
     }
   }, filter);
 };

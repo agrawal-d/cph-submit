@@ -10,6 +10,13 @@ Works for Firefox. Chrome release may be made available in the future.
 1. Install the extension
 1. Keep the browser window open when you want to submit from cph in VS Code.
 
+## Building
+
+1. `cd` into the extension root folder
+1. Run `npm install`
+1. Run `npm run webpack-dev`
+1. To prepare for publishing, run `create-zip.sh`
+
 ## Contributing
 
 Contributions are welcome.

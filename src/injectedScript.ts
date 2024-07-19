@@ -1,5 +1,12 @@
+// This script is injected into Codeforces submission page.
 import { ContentScriptData } from "./types";
 import log from "./log";
+
+declare const browser: any;
+
+if (typeof chrome === "undefined") {
+  self.chrome = browser;
+}
 
 log("cph-submit script injected");
 
@@ -33,8 +40,8 @@ const handleData = (data: ContentScriptData) => {
   submitBtn.click();
 };
 
-log("Adding event listener", browser);
-browser.runtime.onMessage.addListener((data: any, sender: any) => {
+log("Adding event listener", chrome);
+chrome.runtime.onMessage.addListener((data: any, sender: any) => {
   log("Got message", data, sender);
   if (data.type == "cph-submit") {
     handleData(data);
