@@ -119,4 +119,7 @@ source-code.zip
 .web-extension-id
 extension.zip
 extension-screenshot.png
+firefox/
+chrome/
+.cph/
 unpacked/

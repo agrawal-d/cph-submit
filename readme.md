@@ -1,6 +1,7 @@
 # ![ICON](icon-48.png) cph-submit
 
-Browser add on that enables Codeforces submit with [Competitive Programming Helper](https://github.com/agrawal-d/cph)
+Browser add on that enables Codeforces submit with
+[Competitive Programming Helper](https://github.com/agrawal-d/cph)
 
 Works for Firefox. Chrome release may be made available in the future.
 
@@ -12,10 +13,7 @@ Works for Firefox. Chrome release may be made available in the future.
 
 ## Building
 
-1. `cd` into the extension root folder
-1. Run `npm install`
-1. Run `npm run webpack-dev`
-1. To prepare for publishing, run `create-zip.sh`
+Run `create-zip.sh`
 
 ## Contributing
 

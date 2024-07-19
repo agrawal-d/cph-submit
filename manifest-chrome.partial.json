@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "permissions": ["scripting", "webNavigation", "activeTab"],
+    "host_permissions": ["http://localhost/*", "https://codeforces.com/*"],
+    "background": {
+        "service_worker": "dist/backgroundScript.js",
+        "type": "module"
+    }
+}
