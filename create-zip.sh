@@ -3,7 +3,7 @@ echo "Creating extension.zip"
 
 # Build
 echo "Executing npm webpack script"
-npm run webpack-dev
+npm run webpack
 
 # Chrome
 rm -rf chrome
