@@ -1,9 +1,25 @@
 {
-    "manifest_version": 3,
-    "permissions": ["scripting", "webNavigation"],
-    "host_permissions": ["http://localhost/*", "https://codeforces.com/*"],
-    "background": {
-        "service_worker": "dist/backgroundScript.js",
-        "type": "module"
-    }
+  "manifest_version": 3,
+  "name": "CPH Submit",
+  "version": "1.4.0",
+  "description": "Codeforces Submit add-on for Competitive Programming Helper.",
+  "icons": {
+    "48": "icon-48.png"
+  },
+
+  "permissions": [
+    "scripting",
+    "webNavigation",
+    "offscreen"
+  ],
+
+  "host_permissions": [
+    "http://localhost/*",
+    "https://codeforces.com/*"
+  ],
+
+  "background": {
+    "service_worker": "dist/backgroundScript.js",
+    "type": "module"
+  }
 }
