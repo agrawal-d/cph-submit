@@ -12,7 +12,14 @@ export const isContestProblem = (problemUrl: string) => {
     return problemUrl.indexOf('contest') != -1;
 };
 
+export const isAlgoZenithProblem = (problemUrl: string) => {
+    return problemUrl.indexOf('maang.in') !== -1;
+};
+
 export const getSubmitUrl = (problemUrl: string) => {
+    if (isAlgoZenithProblem(problemUrl)) {
+        return problemUrl;
+    }
     if (!isContestProblem(problemUrl)) {
         return config.cfSubmitPage.href;
     }
@@ -35,6 +42,7 @@ export const handleSubmit = async (
     }
 
     log('isContestProblem', isContestProblem(problemUrl));
+    log('isAlgoZenithProblem', isAlgoZenithProblem(problemUrl));
 
     let tab = await chrome.tabs.create({
         active: true,
@@ -46,6 +54,11 @@ export const handleSubmit = async (
     chrome.windows.update(tab.windowId, {
         focused: true,
     });
+
+    if (isAlgoZenithProblem(problemUrl)) {
+        log('AlgoZenith problem detected - note that submission must be done on the platform');
+        return;
+    }
 
     if (typeof browser !== 'undefined') {
         await browser.tabs.executeScript(tab.id, {
