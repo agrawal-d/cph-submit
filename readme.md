@@ -11,11 +11,29 @@ Available for Firefox and Google Chrome.
 
 [Google Chrome](https://chromewebstore.google.com/detail/cph-submit/ekplnobooikgpdbobcciehbhcmlklgnc)
 
-Install the extension using the above links, and keep the browser window open when you want to submit from cph in VS Code.
+Install the extension using the above links, and keep the browser window open
+when you want to submit from cph in VS Code.
 
 ## Building
 
-Run `npm install` , then `create-zip.sh`. Needs [jq](https://jqlang.github.io/jq/download/).
+Run `npm install`, then `node create-zip.js`. Needs
+[jq](https://jqlang.github.io/jq/download/).
+
+## Development
+
+### Formatting
+
+To format the code using Prettier, run:
+
+```bash
+npm run format
+```
+
+To check if the code is correctly formatted, run:
+
+```bash
+npm run format:check
+```
 
 ## Contributing
 
