@@ -12,4 +12,6 @@ export type CphSubmitResponse = {
 
 export type ContentScriptData = {
     type: 'cph-submit';
+    problemIndex: string | null;
+    submitByIndex: boolean;
 } & CphSubmitResponse;

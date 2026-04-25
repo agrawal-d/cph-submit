@@ -6,7 +6,7 @@
     "permissions": [
         "scripting",
         "*://localhost/*",
-        "*://codeforces.com/*",
+        "*://*.codeforces.com/*",
         "webNavigation"
     ],
     "browser_specific_settings": {
