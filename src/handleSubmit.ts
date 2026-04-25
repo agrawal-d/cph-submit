@@ -37,7 +37,8 @@ const SUBMIT_RULES: SubmitRule[] = [
     },
     {
         re: /^\/edu\/course\/([^\/]+)\/lesson\/([^\/]+)\/([^\/]+)\/practice\/contest\/(\d+)\/problem\/(?<problemIndex>[^\/]+)\/?$/,
-        to: (m, o) => `${o}/edu/course/${m[1]}/lesson/${m[2]}/${m[3]}/practice/contest/${m[4]}/submit`,
+        to: (m, o) =>
+            `${o}/edu/course/${m[1]}/lesson/${m[2]}/${m[3]}/practice/contest/${m[4]}/submit`,
         submitByIndex: true,
     },
     {
