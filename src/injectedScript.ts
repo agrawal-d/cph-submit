@@ -10,10 +10,6 @@ if (typeof browser !== 'undefined') {
 
 log('cph-submit script injected');
 
-const isContestProblem = (problemUrl: string) => {
-    return problemUrl.indexOf('contest') != -1;
-};
-
 const handleData = (data: ContentScriptData) => {
     log('Handling submit message');
     const languageEl = document.getElementsByName(
@@ -26,20 +22,14 @@ const handleData = (data: ContentScriptData) => {
     sourceCodeEl.value = data.sourceCode;
     languageEl.value = data.languageId.toString();
 
-    if (!isContestProblem(data.url)) {
-        const problemNameEl = document.getElementsByName(
-            'submittedProblemCode',
-        )[0] as HTMLInputElement;
-
-        problemNameEl.value = data.problemName;
-    } else {
+    if (data.submitByIndex) {
         const problemIndexEl = document.getElementsByName(
             'submittedProblemIndex',
         )[0] as HTMLSelectElement;
 
-        // Dont use problemName from data as it includes the contest number.
-        const problemName = data.url.split('/problem/')[1];
-        problemIndexEl.value = problemName;
+        if (data.problemIndex) {
+            problemIndexEl.value = data.problemIndex;
+        }
     }
 
     log('Submitting problem');
