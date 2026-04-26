@@ -1,7 +1,11 @@
 {
     "manifest_version": 3,
     "permissions": ["scripting", "webNavigation", "offscreen"],
-    "host_permissions": ["http://localhost/*", "https://codeforces.com/*", "https://maang.in/*"],
+    "host_permissions": [
+        "http://localhost/*",
+        "https://codeforces.com/*",
+        "https://maang.in/*"
+    ],
     "background": {
         "service_worker": "dist/backgroundScript.js",
         "type": "module"

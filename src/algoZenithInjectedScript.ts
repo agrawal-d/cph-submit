@@ -20,18 +20,18 @@ const handleData = async (data: ContentScriptData) => {
     log('Handling AlgoZenith submit');
 
     const targetLang = LANGUAGE_MAP[data.languageId] ?? 'C++14';
-    const langBtn = Array.from(document.querySelectorAll('button')).find(
-        b => b.textContent?.trim().match(/^(C|C\+\+14|Java|Python3)$/)
+    const langBtn = Array.from(document.querySelectorAll('button')).find((b) =>
+        b.textContent?.trim().match(/^(C|C\+\+14|Java|Python3)$/),
     ) as HTMLButtonElement;
 
     if (langBtn) {
         langBtn.click();
-        await new Promise(r => setTimeout(r, 500));
-        const option = Array.from(document.querySelectorAll('[role="option"]')).find(
-            o => o.textContent?.trim() === targetLang
-        ) as HTMLElement;
+        await new Promise((r) => setTimeout(r, 500));
+        const option = Array.from(
+            document.querySelectorAll('[role="option"]'),
+        ).find((o) => o.textContent?.trim() === targetLang) as HTMLElement;
         if (option) option.click();
-        await new Promise(r => setTimeout(r, 300));
+        await new Promise((r) => setTimeout(r, 300));
     }
 
     const monacoEditor = (window as any).monaco?.editor?.getEditors?.()?.[0];
@@ -40,10 +40,10 @@ const handleData = async (data: ContentScriptData) => {
         log('Code set via Monaco API');
     }
 
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
 
     const submitBtn = Array.from(document.querySelectorAll('button')).find(
-        b => b.textContent?.trim() === 'Submit'
+        (b) => b.textContent?.trim() === 'Submit',
     ) as HTMLButtonElement;
 
     if (submitBtn) {

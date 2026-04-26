@@ -84,7 +84,9 @@ const resolveSubmitTarget = (problemUrl: string) => {
 export const isAlgoZenithProblem = (problemUrl: string) => {
     try {
         const url = new URL(problemUrl);
-        return url.hostname === 'maang.in' || url.hostname.endsWith('.maang.in');
+        return (
+            url.hostname === 'maang.in' || url.hostname.endsWith('.maang.in')
+        );
     } catch {
         return false;
     }
@@ -107,34 +109,36 @@ export const handleAlgoZenithSubmit = async (
 
     chrome.windows.update(tab.windowId, { focused: true });
 
-    chrome.tabs.onUpdated.addListener(function listener(updatedTabId, changeInfo) {
-        if (updatedTabId === tabId && changeInfo.status === 'complete') {
-            chrome.tabs.onUpdated.removeListener(listener);
+    chrome.tabs.onUpdated.addListener(
+        function listener(updatedTabId, changeInfo) {
+            if (updatedTabId === tabId && changeInfo.status === 'complete') {
+                chrome.tabs.onUpdated.removeListener(listener);
 
-            setTimeout(async () => {
-                if (typeof browser !== 'undefined') {
-                    await browser.tabs.executeScript(tabId, {
-                        file: '/dist/algoZenithInjectedScript.js',
+                setTimeout(async () => {
+                    if (typeof browser !== 'undefined') {
+                        await browser.tabs.executeScript(tabId, {
+                            file: '/dist/algoZenithInjectedScript.js',
+                        });
+                    } else {
+                        await chrome.scripting.executeScript({
+                            target: { tabId, allFrames: false },
+                            files: ['/dist/algoZenithInjectedScript.js'],
+                        });
+                    }
+
+                    chrome.tabs.sendMessage(tabId, {
+                        type: 'cph-submit-algozenith',
+                        problemName,
+                        languageId,
+                        sourceCode,
+                        url: problemUrl,
                     });
-                } else {
-                    await chrome.scripting.executeScript({
-                        target: { tabId, allFrames: false },
-                        files: ['/dist/algoZenithInjectedScript.js'],
-                    });
-                }
 
-                chrome.tabs.sendMessage(tabId, {
-                    type: 'cph-submit-algozenith',
-                    problemName,
-                    languageId,
-                    sourceCode,
-                    url: problemUrl,
-                });
-
-                log('Message sent to AlgoZenith tab');
-            }, 2000);
-        }
-    });
+                    log('Message sent to AlgoZenith tab');
+                }, 2000);
+            }
+        },
+    );
 };
 
 export const handleSubmit = async (
@@ -149,7 +153,12 @@ export const handleSubmit = async (
     }
 
     if (isAlgoZenithProblem(problemUrl)) {
-        return handleAlgoZenithSubmit(problemName, languageId, sourceCode, problemUrl);
+        return handleAlgoZenithSubmit(
+            problemName,
+            languageId,
+            sourceCode,
+            problemUrl,
+        );
     }
 
     const submitTarget = resolveSubmitTarget(problemUrl);
