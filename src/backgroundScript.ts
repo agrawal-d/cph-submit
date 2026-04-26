@@ -1,47 +1,67 @@
-// This script is always running in the background once the extension is installed.
-import config from './config';
-import { CphSubmitResponse, CphEmptyResponse } from './types';
 import { handleSubmit } from './handleSubmit';
 import log from './log';
+import config from './config';
+import { CphSubmitResponse, CphEmptyResponse } from './types';
 
-const mainLoop = async () => {
-    let cphResponse;
-    try {
-        const headers = new Headers();
-        headers.append('cph-submit', 'true');
+const hasOffscreen =
+    typeof chrome !== 'undefined' && typeof chrome.offscreen !== 'undefined';
 
-        const request = new Request(config.cphServerEndpoint.href, {
-            method: 'GET',
-            headers,
+if (hasOffscreen) {
+    const OFFSCREEN_URL = 'dist/offscreen.html';
+
+    const ensureOffscreen = async () => {
+        const exists = await chrome.offscreen.hasDocument();
+        if (exists) return;
+
+        log('Background: creating offscreen document');
+
+        await chrome.offscreen.createDocument({
+            url: OFFSCREEN_URL,
+            reasons: ['BLOBS'] as any,
+            justification: 'CPH submit polling',
         });
+    };
 
-        cphResponse = await fetch(request);
-    } catch (err) {
-        log('Error while fetching cph response', err);
-        return;
-    }
+    chrome.runtime.onStartup.addListener(ensureOffscreen);
+    chrome.runtime.onInstalled.addListener(ensureOffscreen);
 
-    if (!cphResponse.ok) {
-        log('Error while fetching cph response', cphResponse);
-        return;
-    }
+    ensureOffscreen();
 
-    const response: CphSubmitResponse | CphEmptyResponse =
-        await cphResponse.json();
+    chrome.runtime.onMessage.addListener((message) => {
+        if (message.type !== 'CPH_SUBMIT') return;
 
-    if (response.empty) {
-        log('Got empty valid response from CPH');
+        const { problemName, languageId, sourceCode, url } = message.payload;
 
-        return;
-    }
+        log('Background: received submit request');
+        handleSubmit(problemName, languageId, sourceCode, url);
+    });
+} else {
+    log('Firefox detected: using background polling');
 
-    log('Got non-empty valid response from CPH');
-    handleSubmit(
-        response.problemName,
-        response.languageId,
-        response.sourceCode,
-        response.url,
-    );
-};
+    const mainLoop = async () => {
+        let res: Response;
 
-setInterval(mainLoop, config.loopTimeOut);
+        try {
+            res = await fetch(config.cphServerEndpoint.href, {
+                headers: { 'cph-submit': 'true' },
+            });
+        } catch {
+            return;
+        }
+
+        if (!res.ok) return;
+
+        const data: CphSubmitResponse | CphEmptyResponse = await res.json();
+
+        if (data.empty) return;
+
+        handleSubmit(
+            data.problemName,
+            data.languageId,
+            data.sourceCode,
+            data.url,
+        );
+    };
+
+    setInterval(mainLoop, config.loopTimeOut);
+}

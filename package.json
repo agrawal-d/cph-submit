@@ -6,6 +6,8 @@
     "author": "Divyanshu Agrawal",
     "license": "MIT",
     "devDependencies": {
+        "copy-webpack-plugin": "^14.0.0",
+        "prettier": "^3.8.3",
         "ts-loader": "^9.5.1",
         "typescript": "^5.5.3",
         "webpack": "^5.93.0",
@@ -15,7 +17,9 @@
         "webpack-dev": "webpack --mode=development",
         "webpack": "webpack --mode=production",
         "tsc": "tsc",
-        "tsc-dev": "tsc --watch"
+        "tsc-dev": "tsc --watch",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
     },
     "dependencies": {
         "@types/chrome": "^0.0.268"
