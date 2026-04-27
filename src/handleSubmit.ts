@@ -111,7 +111,7 @@ export const handleSubmit = async (
         focused: true,
     });
 
-    if (typeof browser !== 'undefined') {
+    if (typeof browser !== 'undefined' && typeof browser.tabs?.executeScript === 'function') {
         await browser.tabs.executeScript(tab.id, {
             file: '/dist/injectedScript.js',
         });
