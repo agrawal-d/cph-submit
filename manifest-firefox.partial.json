@@ -6,7 +6,8 @@
     "permissions": [
         "scripting",
         "*://localhost/*",
-        "*://*.codeforces.com/*",
+        "*://codeforces.com/*",
+        "*://maang.in/*",
         "webNavigation"
     ],
     "browser_specific_settings": {

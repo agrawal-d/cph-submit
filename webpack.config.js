@@ -5,15 +5,14 @@ module.exports = {
     entry: {
         backgroundScript: './src/backgroundScript.ts',
         injectedScript: './src/injectedScript.ts',
+        algoZenithInjectedScript: './src/algoZenithInjectedScript.ts',
         offscreen: './src/offscreen.ts',
     },
-
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
-
     module: {
         rules: [
             {
@@ -23,11 +22,9 @@ module.exports = {
             },
         ],
     },
-
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
     },
-
     plugins: [
         new CopyWebpackPlugin({
             patterns: [
@@ -38,6 +35,5 @@ module.exports = {
             ],
         }),
     ],
-
     devtool: 'inline-source-map',
 };
