@@ -91,6 +91,17 @@ export const isAlgoZenithProblem = (problemUrl: string) => {
         return false;
     }
 };
+export const isCSESProblem = (problemUrl:string)=>{
+    console.log(`problemURL-CSES ${problemUrl} `)
+    try{
+        const url = new URL(problemUrl);
+        return(
+            url.hostname==='cses.fi' || url.hostname.endsWith('.cses.fi')
+        );
+    }catch{
+        return false;
+    }
+}
 
 export const handleAlgoZenithSubmit = async (
     problemName: string,
@@ -140,7 +151,59 @@ export const handleAlgoZenithSubmit = async (
         },
     );
 };
+export const handleCSESSubmit = async (
+    problemName: string,
+    languageId: number,
+    sourceCode: string,
+    problemUrl: string,
+) => {
+    log('Handling CSES submit for', problemUrl);
+    log('isCSES check:', isCSESProblem(problemUrl));
 
+    
+    const submitUrl = problemUrl
+        .replace('/task/', '/submit/')
+        .replace(/\/?$/, '/');
+
+    const tab = await chrome.tabs.create({
+        active: true,
+        url: submitUrl,
+    });
+
+    const tabId = tab.id as number;
+    chrome.windows.update(tab.windowId, { focused: true });
+
+    chrome.tabs.onUpdated.addListener(
+        function listener(updatedTabId, changeInfo) {
+            if (updatedTabId === tabId && changeInfo.status === 'complete') {
+                chrome.tabs.onUpdated.removeListener(listener);
+
+                setTimeout(async () => {
+                    if (typeof browser !== 'undefined') {
+                        await browser.tabs.executeScript(tabId, {
+                            file: '/dist/csesInjectedScript.js',
+                        });
+                    } else {
+                        await chrome.scripting.executeScript({
+                            target: { tabId, allFrames: false },
+                            files: ['/dist/csesInjectedScript.js'],
+                        });
+                    }
+
+                    chrome.tabs.sendMessage(tabId, {
+                        type: 'cph-submit-cses',
+                        problemName,
+                        languageId,
+                        sourceCode,
+                        url: problemUrl,
+                    });
+
+                    log('Message sent to CSES tab');
+                }, 1000);
+            }
+        },
+    );
+};
 export const handleSubmit = async (
     problemName: string,
     languageId: number,
@@ -158,6 +221,15 @@ export const handleSubmit = async (
             languageId,
             sourceCode,
             problemUrl,
+        );
+    }
+    if(isCSESProblem(problemUrl)){
+
+        return handleCSESSubmit(
+           problemName,
+           languageId,
+           sourceCode,
+           problemUrl,
         );
     }
 

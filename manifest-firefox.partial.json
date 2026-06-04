@@ -6,9 +6,11 @@
     "permissions": [
         "scripting",
         "*://localhost/*",
+        "https://cses.fi/*",
         "*://codeforces.com/*",
         "*://maang.in/*",
-        "webNavigation"
+        "webNavigation",
+        "tabs"
     ],
     "browser_specific_settings": {
         "gecko": {
