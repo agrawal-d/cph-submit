@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "permissions": ["scripting", "webNavigation", "offscreen","tabs"],
+   "permissions": ["scripting", "webNavigation", "offscreen","tabs"],
     "host_permissions": [
         "http://localhost/*",
         "https://cses.fi/*",

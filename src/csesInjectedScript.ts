@@ -9,49 +9,48 @@ if (typeof browser !== 'undefined') {
 log('cph-submit cses script injected');
 
 const extMap: Record<string, string> = {
-    'cpp':        'solution.cpp',
-    'c':          'solution.c',
-    'java':       'solution.java',
-    'python':     'solution.py',
-    'pypy':       'solution.py',
-    'rust':       'solution.rs',
+    'cpp': 'solution.cpp',
+    'c': 'solution.c',
+    'java': 'solution.java',
+    'python': 'solution.py',
+    'rust': 'solution.rs',
     'javascript': 'solution.js',
-    'ruby':       'solution.rb',
-    'haskell':    'solution.hs',
-    'pascal':     'solution.pas',
-    'scala':      'solution.scala',
+    'ruby': 'solution.rb',
+    'haskell': 'solution.hs',
+    'scala': 'solution.scala',
+    'pascal': 'solution.pas'
 };
 
 const langMap: Record<string, string> = {
-    'cpp':        'C++',
-    'c':          'C',
-    'java':       'Java',
-    'python':     'Python3',
-    'pypy':       'Python3',
-    'rust':       'Rust',
+    'cpp': 'C++',
+    'c': 'C',
+    'java': 'Java',
+    'python': 'Python3',
+    'rust': 'Rust',
     'javascript': 'Node.js',
-    'ruby':       'Ruby',
-    'haskell':    'Haskell',
-    'pascal':     'Pascal',
-    'scala':      'Scala',
+    'ruby': 'Ruby',
+    'haskell': 'Haskell',
+    'scala': 'Scala',
+    'pascal': 'Pascal'
 };
 const idToKey: Record<number, string> = {
-    54: 'cpp',
+    54: 'cpp', 50: 'cpp', 42: 'cpp', 61: 'cpp', 89: 'cpp', 91: 'cpp', 59: 'cpp', 2: 'cpp', 52: 'cpp',
     43: 'c',
-    60: 'java',
-    31: 'python',
-    40: 'pypy',
-    75: 'rust',
-    55: 'javascript',
+    36: 'java', 60: 'java', 87: 'java',
+    7: 'python', 31: 'python', 40: 'python', 41: 'python', 70: 'python',
+    75: 'rust', 98: 'rust',
+    34: 'javascript', 55: 'javascript',
     67: 'ruby',
     12: 'haskell',
+    20: 'scala',
+    3: 'pascal', 4: 'pascal', 51: 'pascal'
 };
 
 chrome.runtime.onMessage.addListener((message) => {
     if (message.type !== 'cph-submit-cses') return;
 
     const { sourceCode, languageId } = message;
-
+    
     const form = document.querySelector('form');
     if (!form) {
         log('CSES form not found');
@@ -61,7 +60,10 @@ chrome.runtime.onMessage.addListener((message) => {
    
     const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement;
     if (fileInput) {
+        log(`langID is ${languageId}`);
+
         const langKey = idToKey[languageId] ?? 'cpp';
+        log(`langKey is ${langKey}`);
         const fileName = extMap[langKey] ?? 'solution.cpp';
        const file = new File([sourceCode], fileName, { type: 'text/plain' });
         const dt = new DataTransfer();
