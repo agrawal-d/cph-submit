@@ -3,6 +3,7 @@
     "permissions": ["scripting", "webNavigation", "offscreen"],
     "host_permissions": [
         "http://localhost/*",
+        "https://cses.fi/*",
         "https://codeforces.com/*",
         "https://maang.in/*"
     ],

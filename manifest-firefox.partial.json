@@ -6,6 +6,7 @@
     "permissions": [
         "scripting",
         "*://localhost/*",
+        "https://cses.fi/*",
         "*://codeforces.com/*",
         "*://maang.in/*",
         "webNavigation"
