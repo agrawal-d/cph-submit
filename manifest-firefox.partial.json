@@ -9,8 +9,8 @@
         "https://cses.fi/*",
         "*://codeforces.com/*",
         "*://maang.in/*",
-        "webNavigation",
-        "tabs"
+        "webNavigation"
+        
     ],
     "browser_specific_settings": {
         "gecko": {

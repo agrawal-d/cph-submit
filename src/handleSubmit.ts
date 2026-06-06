@@ -160,7 +160,6 @@ export const handleCSESSubmit = async (
     log('Handling CSES submit for', problemUrl);
     log('isCSES check:', isCSESProblem(problemUrl));
 
-    
     const submitUrl = problemUrl
         .replace('/task/', '/submit/')
         .replace(/\/?$/, '/');
@@ -179,26 +178,29 @@ export const handleCSESSubmit = async (
                 chrome.tabs.onUpdated.removeListener(listener);
 
                 setTimeout(async () => {
-                    if (typeof browser !== 'undefined') {
-                        await browser.tabs.executeScript(tabId, {
-                            file: '/dist/csesInjectedScript.js',
-                        });
-                    } else {
+                    
+                    if (typeof chrome !== 'undefined' && chrome.scripting) {
                         await chrome.scripting.executeScript({
                             target: { tabId, allFrames: false },
                             files: ['/dist/csesInjectedScript.js'],
                         });
-                    }
+                    } else if (typeof browser !== 'undefined') {
+                        await browser.tabs.executeScript(tabId, {
+                            file: '/dist/csesInjectedScript.js',
+                        });
+                    }     
+                    setTimeout(() => {
+                        chrome.tabs.sendMessage(tabId, {
+                            type: 'cph-submit-cses',
+                            problemName,
+                            languageId,
+                            sourceCode,
+                            url: problemUrl,
+                        });
 
-                    chrome.tabs.sendMessage(tabId, {
-                        type: 'cph-submit-cses',
-                        problemName,
-                        languageId,
-                        sourceCode,
-                        url: problemUrl,
-                    });
-
-                    log('Message sent to CSES tab');
+                        log('Message sent to CSES tab');
+                    }, 500);
+                    
                 }, 1000);
             }
         },
