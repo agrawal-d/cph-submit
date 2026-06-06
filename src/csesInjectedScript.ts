@@ -9,16 +9,16 @@ if (typeof browser !== 'undefined') {
 log('cph-submit cses script injected');
 
 const extMap: Record<string, string> = {
-    cpp: `.cpp`,
-    c: '.c',
-    java: '.java',
-    python: '.py',
-    rust: '.rs',
-    javascript: '.js',
-    ruby: '.rb',
-    haskell: '.hs',
-    scala: '.scala',
-    pascal: '.pas',
+    cpp: 'solution.cpp',
+    c: 'solution.c',
+    java: 'solution.java',
+    python: 'solution.py',
+    rust: 'solution.rs',
+    javascript: 'solution.js',
+    ruby: 'solution.rb',
+    haskell: 'solution.hs',
+    scala: 'solution.scala',
+    pascal: 'solution.pas',
 };
 
 const langMap: Record<string, string> = {
@@ -67,7 +67,7 @@ const idToKey: Record<number, string> = {
 chrome.runtime.onMessage.addListener((message) => {
     if (message.type !== 'cph-submit-cses') return;
 
-    const { sourceCode, problemName, languageId } = message;
+    const { sourceCode, languageId } = message;
 
     const form = document.querySelector('form');
     if (!form) {
@@ -80,11 +80,9 @@ chrome.runtime.onMessage.addListener((message) => {
         'input[type="file"]',
     ) as HTMLInputElement;
     if (fileInput) {
-        log(`langID is ${languageId}`);
-
         const langKey = idToKey[languageId] ?? 'cpp';
-        log(`langKey is ${langKey}`);
-        const fileName = `${problemName}+extMap[langKey]`;
+
+        const fileName = extMap[langKey] ?? 'solution.cpp';
         const file = new File([sourceCode], fileName, { type: 'text/plain' });
         const dt = new DataTransfer();
         dt.items.add(file);
