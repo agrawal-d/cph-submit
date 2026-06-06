@@ -91,17 +91,15 @@ export const isAlgoZenithProblem = (problemUrl: string) => {
         return false;
     }
 };
-export const isCSESProblem = (problemUrl:string)=>{
-    console.log(`problemURL-CSES ${problemUrl} `)
-    try{
+export const isCSESProblem = (problemUrl: string) => {
+    console.log(`problemURL-CSES ${problemUrl} `);
+    try {
         const url = new URL(problemUrl);
-        return(
-            url.hostname==='cses.fi' || url.hostname.endsWith('.cses.fi')
-        );
-    }catch{
+        return url.hostname === 'cses.fi' || url.hostname.endsWith('.cses.fi');
+    } catch {
         return false;
     }
-}
+};
 
 export const handleAlgoZenithSubmit = async (
     problemName: string,
@@ -178,7 +176,6 @@ export const handleCSESSubmit = async (
                 chrome.tabs.onUpdated.removeListener(listener);
 
                 setTimeout(async () => {
-                    
                     if (typeof chrome !== 'undefined' && chrome.scripting) {
                         await chrome.scripting.executeScript({
                             target: { tabId, allFrames: false },
@@ -188,7 +185,7 @@ export const handleCSESSubmit = async (
                         await browser.tabs.executeScript(tabId, {
                             file: '/dist/csesInjectedScript.js',
                         });
-                    }     
+                    }
                     setTimeout(() => {
                         chrome.tabs.sendMessage(tabId, {
                             type: 'cph-submit-cses',
@@ -200,7 +197,6 @@ export const handleCSESSubmit = async (
 
                         log('Message sent to CSES tab');
                     }, 500);
-                    
                 }, 1000);
             }
         },
@@ -225,13 +221,12 @@ export const handleSubmit = async (
             problemUrl,
         );
     }
-    if(isCSESProblem(problemUrl)){
-
+    if (isCSESProblem(problemUrl)) {
         return handleCSESSubmit(
-           problemName,
-           languageId,
-           sourceCode,
-           problemUrl,
+            problemName,
+            languageId,
+            sourceCode,
+            problemUrl,
         );
     }
 

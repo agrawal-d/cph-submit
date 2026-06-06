@@ -10,7 +10,6 @@
         "*://codeforces.com/*",
         "*://maang.in/*",
         "webNavigation"
-        
     ],
     "browser_specific_settings": {
         "gecko": {

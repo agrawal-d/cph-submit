@@ -6,7 +6,7 @@ module.exports = {
         backgroundScript: './src/backgroundScript.ts',
         injectedScript: './src/injectedScript.ts',
         algoZenithInjectedScript: './src/algoZenithInjectedScript.ts',
-        csesInjectedScript: './src/csesInjectedScript.ts', 
+        csesInjectedScript: './src/csesInjectedScript.ts',
         offscreen: './src/offscreen.ts',
     },
     output: {
