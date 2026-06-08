@@ -7,6 +7,7 @@ module.exports = {
         injectedScript: './src/injectedScript.ts',
         algoZenithInjectedScript: './src/algoZenithInjectedScript.ts',
         csesInjectedScript: './src/csesInjectedScript.ts',
+        codeChefInjectedScript: './src/codeChefInjectedScript.ts',
         offscreen: './src/offscreen.ts',
     },
     output: {

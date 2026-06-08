@@ -8,6 +8,7 @@
         "*://localhost/*",
         "https://cses.fi/*",
         "*://codeforces.com/*",
+        "*://*.codechef.com/*",
         "*://maang.in/*",
         "webNavigation"
     ],

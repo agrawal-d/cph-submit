@@ -2,6 +2,7 @@ import config from './config';
 import log from './log';
 
 declare const browser: any;
+declare const ace: any; //This is required for platfroms using ace code Editor
 
 if (typeof browser !== 'undefined') {
     self.chrome = browser;
@@ -96,6 +97,14 @@ export const isCSESProblem = (problemUrl: string) => {
     try {
         const url = new URL(problemUrl);
         return url.hostname === 'cses.fi' || url.hostname.endsWith('.cses.fi');
+    } catch {
+        return false;
+    }
+};
+export const isCodeChefProblem = (problemUrl: string) => {
+    try {
+        const url = new URL(problemUrl);
+        return url.hostname.endsWith('codechef.com');
     } catch {
         return false;
     }
@@ -202,6 +211,66 @@ export const handleCSESSubmit = async (
         },
     );
 };
+export const handleCodeChefSubmit = async (
+    problemName: string,
+    languageId: number,
+    sourceCode: string,
+    problemUrl: string,
+) => {
+    const tab = await chrome.tabs.create({ active: true, url: problemUrl });
+    const tabId = tab.id as number;
+    chrome.windows.update(tab.windowId, { focused: true });
+
+    chrome.tabs.onUpdated.addListener(
+        function listener(updatedTabId, changeInfo) {
+            if (updatedTabId === tabId && changeInfo.status === 'complete') {
+                chrome.tabs.onUpdated.removeListener(listener);
+
+                setTimeout(async () => {
+                    await chrome.scripting.executeScript({
+                        target: { tabId, allFrames: false },
+                        files: ['/dist/codeChefInjectedScript.js'],
+                    });
+
+                    chrome.tabs.sendMessage(tabId, {
+                        type: 'cph-submit-codechef',
+                        languageId,
+                    });
+
+                    /**ChromeV3 don't Allow us to inject script due to CSP policy**/
+                    setTimeout(async () => {
+                        await chrome.scripting.executeScript({
+                            target: { tabId, allFrames: false },
+                            world: 'MAIN',
+                            func: (code) => {
+                                const w = window as any;
+                                if (w.ace)
+                                    w.ace
+                                        .edit(
+                                            document.querySelector(
+                                                '.ace_editor',
+                                            ),
+                                        )
+                                        .setValue(code, -1);
+                            },
+                            args: [sourceCode],
+                        });
+
+                        setTimeout(() => {
+                            chrome.scripting.executeScript({
+                                target: { tabId, allFrames: false },
+                                func: () =>
+                                    document
+                                        .getElementById('submit_btn')
+                                        ?.click(),
+                            });
+                        }, 500);
+                    }, 1000);
+                }, 2000);
+            }
+        },
+    );
+};
 export const handleSubmit = async (
     problemName: string,
     languageId: number,
@@ -223,6 +292,14 @@ export const handleSubmit = async (
     }
     if (isCSESProblem(problemUrl)) {
         return handleCSESSubmit(
+            problemName,
+            languageId,
+            sourceCode,
+            problemUrl,
+        );
+    }
+    if (isCodeChefProblem(problemUrl)) {
+        return handleCodeChefSubmit(
             problemName,
             languageId,
             sourceCode,
