@@ -5,6 +5,7 @@
         "http://localhost/*",
         "https://cses.fi/*",
         "https://codeforces.com/*",
+        "*://*.codechef.com/*",
         "https://maang.in/*"
     ],
     "background": {

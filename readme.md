@@ -1,7 +1,8 @@
 # ![ICON](icon-48.png) cph-submit
 
-Browser add-on that enables direct submission on Codeforces,CSES and Maang.in
-with[Competitive Programming Helper](https://github.com/agrawal-d/cph).
+Browser add-on that enables direct submission on Codeforces,CodeChef,CSES and
+Maang.in with
+[Competitive Programming Helper](https://github.com/agrawal-d/cph).
 
 Available for Firefox and Google Chrome.
 
