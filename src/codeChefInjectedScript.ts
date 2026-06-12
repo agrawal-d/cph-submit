@@ -1,6 +1,8 @@
 import { ContentScriptData } from './types';
 import log from './log';
 
+declare const ace: any;
+
 log(`cph-submit Codechef script injected`);
 
 const idToCodechefLanguage: Record<number, string> = {
@@ -47,19 +49,78 @@ const languageMap: Record<string, string> = {
     Rust: 'rust',
 };
 
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.type !== 'cph-submit-codechef') return;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    const languageName = idToCodechefLanguage[message.languageId];
-    if (!languageName) return;
+const simulateHumanClick = (element: HTMLElement) => {
+    ['mouseover', 'mousedown', 'mouseup', 'click'].forEach((eventType) => {
+        element.dispatchEvent(
+            new MouseEvent(eventType, {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                buttons: 1,
+            }),
+        );
+    });
+};
 
-    const languageSelect = document.querySelector(
-        '#language-select',
-    ) as HTMLElement | null;
-    if (languageSelect) languageSelect.textContent = languageName;
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type !== 'cph-submit-codechef') return false;
 
-    const languageInput = document.querySelector(
-        'input.MuiSelect-nativeInput',
-    ) as HTMLInputElement | null;
-    if (languageInput) languageInput.value = languageMap[languageName];
+    const execute = async () => {
+        try {
+            const languageName = idToCodechefLanguage[message.languageId];
+            if (!languageName) {
+                sendResponse({ success: false, error: 'Unsupported language' });
+                return;
+            }
+
+            const languageSelectBtn = document.querySelector(
+                '#language-select',
+            ) as HTMLElement | null;
+            if (languageSelectBtn) {
+                simulateHumanClick(languageSelectBtn);
+                await sleep(300);
+
+                const options = Array.from(
+                    document.querySelectorAll('[role="option"]'),
+                ) as HTMLElement[];
+                const targetOption = options.find((opt) => {
+                    const val = opt.getAttribute('data-value');
+                    return (
+                        val === languageMap[languageName] ||
+                        opt.textContent?.trim() === languageName
+                    );
+                });
+
+                if (targetOption) {
+                    simulateHumanClick(targetOption);
+                    await sleep(400);
+                }
+            }
+
+            const editor = document.querySelector('.ace_editor');
+            if (editor && typeof ace !== 'undefined') {
+                ace.edit(editor).setValue(message.sourceCode, -1);
+            }
+
+            await sleep(200);
+
+            const submitBtn = document.getElementById('submit_btn');
+            if (submitBtn) {
+                simulateHumanClick(submitBtn);
+                sendResponse({ success: true });
+            } else {
+                sendResponse({
+                    success: false,
+                    error: 'Submit button not found',
+                });
+            }
+        } catch (error: any) {
+            sendResponse({ success: false, error: error.message });
+        }
+    };
+
+    execute();
+    return true;
 });
